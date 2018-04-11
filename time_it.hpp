@@ -3,10 +3,10 @@
 #include <chrono>
 #include <iostream>
 
-using clock_type = std::chrono::high_resolution_clock;
-
 struct time_it
 {
+    using clock_type = std::chrono::high_resolution_clock;
+
     time_it()
         : _start(clock_type::now())
     {
@@ -15,7 +15,7 @@ struct time_it
     ~time_it()
     {
         auto took = clock_type::now() - _start;
-        std::cerr << "took " << took.count() << std::endl;
+        std::cerr << "took " << took.count() << "ns" << std::endl;
     }
 
 private:
