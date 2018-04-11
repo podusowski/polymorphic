@@ -64,4 +64,16 @@ int main()
             shared_polymorphic<adder>(), shared_polymorphic<multiplier>()};
         loop(u);
     }
+
+    {
+        auto a = std::make_shared<adder>();
+        user<std::shared_ptr<icalculator>> u(a, a);
+        loop(u);
+    }
+
+    {
+        shared_polymorphic<adder> a;
+        user<shared_polymorphic<icalculator>> u{a.share(), a.share()};
+        loop(u);
+    }
 }
