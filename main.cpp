@@ -16,20 +16,29 @@ struct adder : public icalculator
     }
 };
 
+struct multiplier : public icalculator
+{
+    int calculate(int x) override
+    {
+        return x * x;
+    }
+};
+
 template<class T>
 struct user
 {
-    user(T calc) : _calc(calc)
+    user(T calc, T calc2) : _calc(calc), _calc2(calc2)
     {
     }
 
     int calculate(int x)
     {
-        return _calc->calculate(x);
+        return _calc2->calculate(_calc->calculate(x));
     }
 
 private:
     T _calc;
+    T _calc2;
 };
 
 template<class T>
@@ -44,6 +53,15 @@ void loop(T & impl)
 
 int main()
 {
-    user<std::shared_ptr<icalculator>> u(std::make_shared<adder>());
-    loop(u);
+    {
+        user<std::shared_ptr<icalculator>> u(
+            std::make_shared<adder>(), std::make_shared<multiplier>());
+        loop(u);
+    }
+
+    {
+        user<shared_polymorphic<icalculator>> u{
+            shared_polymorphic<adder>(), shared_polymorphic<multiplier>()};
+        loop(u);
+    }
 }
