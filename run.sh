@@ -1,4 +1,4 @@
 set -e
 
-c++ -o bench main.cpp
+c++ -Wall -o bench main.cpp
 ./bench
